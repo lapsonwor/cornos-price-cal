@@ -10,7 +10,7 @@ const ThemeLayout: FC<any> = ({ children }) => {
             breakpoints: {
                 values: {
                     "xs": 0,
-                    "sm": 375,
+                    "sm": 374,
                     "md": 764,
                     "lg": 1116,
                     "xl": 1281
