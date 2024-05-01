@@ -119,7 +119,7 @@ export default function Home() {
         </div>
         <div className="sm:block md:hidden mx-[68px]">
           <div className="flex items-center justify-center">
-            <div className="text-[#29304d] text-[38px] mr-2">$16.00</div>
+            <div className="text-[#29304d] text-[38px] mr-2">${pricePerMonth}.00</div>
             <div> / month</div>
           </div>
           <div className="text-right">or ~ {Math.ceil(croValue * 100) / 100} CRO / month</div>
