@@ -1,3 +1,7 @@
 # Demo instructions
 
-Please complete this document with all the step by step instructions that the reviewer must follow in order to run the demo locally on their laptop (the instructions must be easy to follow by anyone).
+1. Install node version 18 and nvm use command in your environment first.
+2. Install yarn command.
+3. Input 'yarn' to install all package.
+4. Input 'yarn dev' to run the project.
+5. Finally, in your chrome browser, visit http://localhost:3000 to view the demo page.
