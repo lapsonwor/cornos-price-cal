@@ -6,65 +6,96 @@ import DoneIcon from '@mui/icons-material/Done';
 import { border, borderRadius, padding } from "@mui/system";
 import { styled } from '@mui/material/styles';
 import { useState, useEffect } from "react";
+import axios from 'axios';
 
 export default function Home() {
   const [pricePerMonth, setPricePerMonth] = useState(8);
   const [pageViews, setPageViews] = useState('10K');
   const [pageViewCat, setPageViewCat] = useState(1);
   const [billType, setBillType] = useState(1);
+  const [croValue, setCroValue] = useState(0);
+  const [croRate, setCroRate] = useState(0);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json', {
+          timeout: 500,
+        });
+        // console.log('res', res.data);
+        let croRateRes = res.data.usd.cro;
+        setCroRate(croRateRes);
+        setCroValue(pricePerMonth * croRateRes);
+        // console.log('croRate', croRate);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    let price = 8;
     switch (pageViewCat) {
       case 1:
+        price = 8;
         if (billType === 1) {
-          setPricePerMonth(8);
+          setPricePerMonth(price);
         } else {
-          let price = 8 * 0.75;
+          price = price * 0.75;
           setPricePerMonth(price);
         }
         setPageViews('10K');
         break;
       case 2:
+        price = 12;
         if (billType === 1) {
-          setPricePerMonth(12);
+          setPricePerMonth(price);
         } else {
-          let price = 12 * 0.75;
+          price = price * 0.75;
           setPricePerMonth(price);
         }
         setPageViews('50K');
         break;
       case 3:
+        price = 16;
         if (billType === 1) {
-          setPricePerMonth(16);
+          setPricePerMonth(price);
         } else {
-          let price = 16 * 0.75;
+          price = price * 0.75;
           setPricePerMonth(price);
         }
         setPageViews('100K');
         break;
       case 4:
+        price = 24;
         if (billType === 1) {
-          setPricePerMonth(24);
+          setPricePerMonth(price);
         } else {
-          let price = 24 * 0.75;
+          price = price * 0.75;
           setPricePerMonth(price);
         }
         setPageViews('500K');
         break;
       case 5:
+        price = 36;
         if (billType === 1) {
-          setPricePerMonth(36);
+          setPricePerMonth(price);
         } else {
-          let price = 36 * 0.75;
+          price = price * 0.75;
           setPricePerMonth(price);
         }
         setPageViews('1M');
         break;
       default:
-        setPricePerMonth(8);
+        price = 8;
+        setPricePerMonth(price);
         setPageViews('10K');
     }
+    setCroValue(price * croRate);
   }, [pageViewCat, billType]);
+
+
 
   return (
     <main className="flex min-h-screen flex-col items-center text-[#8b909e] font-bold text-[15px] sm:px-6 sm:py-16 lg:px-24 lg:py-24" style={mainBg}>
@@ -80,7 +111,7 @@ export default function Home() {
               <div className="text-[#29304d] text-[45px] mr-2">${pricePerMonth}.00</div>
               <div> / month</div>
             </div>
-            <div className="text-right">or ~ 32 CRO / month</div>
+            <div className="text-right">or ~ {Math.ceil(croValue * 100) / 100} CRO / month</div>
           </div>
         </div>
         <div className="sm:mx-6 md:mx-10">
@@ -91,7 +122,7 @@ export default function Home() {
             <div className="text-[#29304d] text-[38px] mr-2">$16.00</div>
             <div> / month</div>
           </div>
-          <div className="text-right">or ~ 32 CRO / month</div>
+          <div className="text-right">or ~ {Math.ceil(croValue * 100) / 100} CRO / month</div>
         </div>
         <div className="my-10 justify-end mr-10 flex items-center sm:mx-6 md:mx-10 sm:text-[11px] md:text-[15px]">
           <div>Monthly Biling</div>
