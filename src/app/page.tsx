@@ -5,15 +5,12 @@ import Switch from "@mui/material/Switch";
 import DoneIcon from '@mui/icons-material/Done';
 import { border, borderRadius, padding } from "@mui/system";
 import { styled } from '@mui/material/styles';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from 'axios';
 
 export default function Home() {
-  const [pricePerMonth, setPricePerMonth] = useState(8);
-  const [pageViews, setPageViews] = useState('10K');
   const [pageViewCat, setPageViewCat] = useState(1);
   const [billType, setBillType] = useState(1);
-  const [croValue, setCroValue] = useState(0);
   const [croRate, setCroRate] = useState(0);
 
   useEffect(() => {
@@ -22,80 +19,83 @@ export default function Home() {
         const res = await axios.get('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json', {
           timeout: 500,
         });
-        // console.log('res', res.data);
         let croRateRes = res.data.usd.cro;
         setCroRate(croRateRes);
-        setCroValue(pricePerMonth * croRateRes);
-        // console.log('croRate', croRate);
       } catch (error) {
         console.error(error);
       }
     };
-    fetchData();
   }, []);
 
-  useEffect(() => {
+  const pricePerMonth = useMemo(() => {
     let price = 8;
     switch (pageViewCat) {
       case 1:
         price = 8;
         if (billType === 1) {
-          setPricePerMonth(price);
+          return price;
         } else {
           price = price * 0.75;
-          setPricePerMonth(price);
+          return price;
         }
-        setPageViews('10K');
-        break;
       case 2:
         price = 12;
         if (billType === 1) {
-          setPricePerMonth(price);
+          return price;
         } else {
           price = price * 0.75;
-          setPricePerMonth(price);
+          return price;
         }
-        setPageViews('50K');
-        break;
       case 3:
         price = 16;
         if (billType === 1) {
-          setPricePerMonth(price);
+          return price;
         } else {
           price = price * 0.75;
-          setPricePerMonth(price);
+          return price;
         }
-        setPageViews('100K');
-        break;
       case 4:
         price = 24;
         if (billType === 1) {
-          setPricePerMonth(price);
+          return price;
         } else {
           price = price * 0.75;
-          setPricePerMonth(price);
+          return price;
         }
-        setPageViews('500K');
-        break;
       case 5:
         price = 36;
         if (billType === 1) {
-          setPricePerMonth(price);
+          return price;
         } else {
           price = price * 0.75;
-          setPricePerMonth(price);
+          return price;
         }
-        setPageViews('1M');
-        break;
       default:
         price = 8;
-        setPricePerMonth(price);
-        setPageViews('10K');
+        return price;
     }
-    setCroValue(price * croRate);
   }, [pageViewCat, billType]);
 
+  const pageViews = useMemo(() => {
+    switch (pageViewCat) {
+      case 1:
+        return '10K';
+      case 2:
+        return '50K';
+      case 3:
+        return '100K';
+      case 4:
+        return '500K';
+      case 5:
+        return '1M';
+      default:
+        return '10K';
+    }
+  }, [pageViewCat, billType]);
 
+  const croValue = useMemo(() => {
+    return pricePerMonth * croRate;
+  }, [pricePerMonth, croRate]);
 
   return (
     <main className="flex min-h-screen flex-col items-center text-[#8b909e] font-bold text-[15px] sm:px-6 sm:py-16 lg:px-24 lg:py-24" style={mainBg}>
@@ -115,7 +115,7 @@ export default function Home() {
           </div>
         </div>
         <div className="sm:mx-6 md:mx-10">
-          <Slider sx={sliderColr} defaultValue={1} aria-labelledby="discrete-slider" valueLabelDisplay="auto" step={1} min={1} max={4} value={pageViewCat} onChange={(e, v) => setPageViewCat(v)} valueLabelFormat={value => `${pageViews} PAGEVIEWS`} />
+          <Slider sx={sliderColr} defaultValue={1} aria-labelledby="discrete-slider" valueLabelDisplay="auto" step={1} min={1} max={5} value={pageViewCat} onChange={(e, v) => setPageViewCat(v)} valueLabelFormat={value => `${pageViews} PAGEVIEWS`} />
         </div>
         <div className="sm:block md:hidden mx-[68px]">
           <div className="flex items-center justify-center">
