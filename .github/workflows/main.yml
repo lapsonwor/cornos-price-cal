@@ -1,7 +1,7 @@
 name: First Workflow
-on: workflow_dispatch
+on: push
 jobs: 
-  testing:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -13,6 +13,7 @@ jobs:
       - name: Install dependencies
         run: npm i
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get code
