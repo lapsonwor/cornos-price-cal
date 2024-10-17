@@ -1,7 +1,7 @@
 name: First Workflow
 on: workflow_dispatch
 jobs: 
-  first-job:
+  testing:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -12,4 +12,18 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: npm i
-            
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm i
+      - name: Build project
+        run: npm run build
+      - name: Deploy
+        run: echo "Deploying"
